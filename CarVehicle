@@ -1,0 +1,28 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Test11
+{
+    class Car : Vehicle
+    {
+        public VcleID CarNum { get; set; }
+
+        public override string GiveDetails()
+        {
+            return String.Format("Car spec:\nMake={0}, Model={1}, Year={2}",
+                this.Make,
+                this.Model,
+                this.Year);
+        }
+    }
+
+    enum VcleID
+    {
+        Car1,
+        Car2,
+        Car3
+    }
+}
