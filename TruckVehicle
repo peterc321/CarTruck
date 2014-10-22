@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Test11
+{
+    class Truck : Vehicle
+    {
+        public int TowingCapacity { get; set; }
+        public VchleID TruckNum { get; set; }
+
+        public override string GiveDetails()
+        {
+            return String.Format("Truck spec:\nMake={0}, Model={1}, Year={2}, Tow Capacity={3} kilos",
+                this.Make,
+                this.Model,
+                this.Year,
+                this.TowingCapacity);
+        }
+
+        public override string PriceUp()
+        {
+            return String.Format("This truck costs only {0:C}",
+                this.Currentvalue);
+        }
+    }
+
+    enum VchleID
+    {
+        Truck1,
+        Truck2,
+        Truck3
+    }
+}
+
