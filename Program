@@ -1,0 +1,147 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Test11
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Car> myCarList = new List<Car>() {
+                new Car { Make = "Jaguar", Model = "XJS", Year = 2000, Currentvalue = 10000, CarNum = VcleID.Car1, Type = VcleType.Car },
+                new Car { Make = "Fiat", Model = "Stilo", Year = 2005, Currentvalue = 4000, CarNum = VcleID.Car2, Type = VcleType.Car },
+                new Car { Make = "Fiat", Model = "Bravo", Year = 2002, Currentvalue = 2000, CarNum = VcleID.Car3, Type = VcleType.Car }
+            };
+
+            List<Truck> myTruckList = new List<Truck>() {
+                new Truck { Make = "Ford", Model = "Truckado", Year = 2002, TowingCapacity = 2000, Currentvalue = 5000, TruckNum = VchleID.Truck1, Type = VcleType.Truck },
+                new Truck { Make = "Ford", Model = "Truckador", Year = 2005, TowingCapacity = 1000, Currentvalue = 4500, TruckNum = VchleID.Truck2, Type = VcleType.Truck },
+                new Truck { Make = "Nissan", Model = "Big Trucker", Year = 2005, TowingCapacity = 5000, Currentvalue = 15000, TruckNum = VchleID.Truck3, Type = VcleType.Truck }
+            };
+
+            var jaguar = from car in myCarList
+                         where car.Make == "Jaguar"
+                         select car;
+
+            var stilo = from car in myCarList
+                         where car.Model == "Fiat"
+                         && car.CarNum == VcleID.Car2
+                         select car;
+
+
+            var bravo = from car in myCarList
+                        where car.Model == "Fiat"
+                        || car.Currentvalue <= 3000
+                        select car;
+
+            var big = from truck in myTruckList
+                      where truck.Make == "Nissan"
+                      || truck.TowingCapacity == 5000
+                      select truck;
+
+            var truckado = from truck in myTruckList
+                           where truck.TruckNum == VchleID.Truck1
+                           select truck;
+
+            var truckador = from truck in myTruckList
+                            where truck.TruckNum == VchleID.Truck2
+                            select truck;
+
+
+            Console.WriteLine("Please indicate your preference. Car or Truck?");
+            string userValue = Console.ReadLine();
+            VcleType myValue;
+            Console.WriteLine("Here are some exaples from our range\n   ");
+
+            if (Enum.TryParse<VcleType>(userValue, true, out myValue))
+            {
+                switch (myValue)
+                {
+                    case VcleType.Car:
+                        {
+                            foreach (Car car in myCarList)
+                                printVehicleDetails(car);
+                            Console.WriteLine("Please indicate which of these may be of interest; Car1, Car2 or Car3");
+                            string userChoice = Console.ReadLine();
+                            VcleID myPrice;
+                            if (Enum.TryParse<VcleID>(userChoice, true, out myPrice))
+                            {
+                                switch (myPrice)
+                                {
+                                    case VcleID.Car1:
+                                        foreach (Car car in jaguar)
+                                            printVehiclePrice(car);
+                                        break;
+                                    case VcleID.Car2:
+                                        foreach (Car car in stilo)
+                                            printVehiclePrice(car);
+                                        break;
+                                    case VcleID.Car3:
+                                        foreach (Car car in bravo)
+                                            printVehiclePrice(car);
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                            }
+                            else
+                                Console.WriteLine("New additions coming soon!");
+                        }
+                        break;
+                    case VcleType.Truck:
+
+                        {
+                            foreach (Truck truck in myTruckList)
+                                printVehicleDetails(truck);
+                            Console.WriteLine("Please indicate which of these may be of interest; Truck1, Truck2 or Truck3");
+                            string userTChoice = Console.ReadLine();
+                            VchleID myTrice;
+                            if (Enum.TryParse<VchleID>(userTChoice, true, out myTrice))
+                            {
+                                switch (myTrice)
+                                {
+                                    case VchleID.Truck1:
+                                        foreach (Truck truck in big)
+                                            printVehiclePrice(truck);
+                                        break;
+                                    case VchleID.Truck2:
+                                        foreach (Truck truck in truckado)
+                                            printVehiclePrice(truck);
+                                        break;
+                                    case VchleID.Truck3:
+                                        foreach (Truck truck in truckador)
+                                            printVehiclePrice(truck);
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                            }
+                            else
+                                Console.WriteLine("New additions coming soon!");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else Console.WriteLine("Unfortunately they are the only vehicles we sell!");
+
+            Console.ReadLine();
+        }
+
+        private static void printVehicleDetails(Vehicle vehicle)
+        {
+            Console.WriteLine(vehicle.GiveDetails());
+        }
+
+        private static void printVehiclePrice(Vehicle vehicle)
+        {
+            Console.WriteLine(vehicle.PriceUp());
+        }
+    }
+}
